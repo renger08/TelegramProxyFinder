@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<title>MTProto Proxy</title>
+
+<!-- Google Font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    background-color: #000;
+    background-image: url("./assets/images/bg.jpg");
+    background-size: cover;
+    background-position: top center;
+    color: #eaeaea;
+    padding: 30px;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: auto;
+  }
+
+
+  .buttons {
+    margin-top: 12px;
+    text-align: center;
+  }
+
+  button {
+    background: #00000050;
+    border: none;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-family: "Vazirmatn", sans-serif;
+    color: #eaeaea;
+    font-weight: 400;
+    margin: 0 6px;
+  }
+
+  button:hover {
+    background: #00cc7a;
+  }
+
+  .box {
+    background: #00000050;
+    border: 3px solid #00ff9c;
+    padding: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    height: 400px;
+
+    white-space: pre;
+    overflow-y: auto;
+    overflow-x: auto;
+
+    font-size: 14px;
+  }
+  .text{
+    text-align: center;
+    direction: rtl;
+    font-family: "Vazirmatn", sans-serif;
+    font-weight: 300;
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div id="proxyBox" class="box">
+    در حال بارگذاری...
+  </div>
+
+  <div class="buttons">
+    <button onclick="copyText()">📋 کپی</button>
+    <button onclick="loadProxies()">🔄 رندوم جدید</button>
+  </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<hr>
+<p class="text">ساخته شده با ❤️ توسط Renger08</p>
+
+<script>
+const URL = 'https://raw.githubusercontent.com/SoliSpirit/mtproto/master/all_proxies.txt';
+const COUNT = 20;
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+function loadProxies() {
+  fetch(URL + '?t=' + Date.now())
+    .then(r => r.text())
+    .then(text => {
+      const list = text
+        .split('\n')
+        .map(l => l.trim())
+        .filter(Boolean);
+
+      shuffle(list);
+
+      document.getElementById('proxyBox').textContent =
+        list.slice(0, COUNT).join('\n');
+    })
+    .catch(() => {
+      document.getElementById('proxyBox').textContent =
+        'خطا در دریافت داده';
+    });
+}
+
+function copyText() {
+  navigator.clipboard.writeText(
+    document.getElementById('proxyBox').textContent
+  );
+}
+
+loadProxies();
+</script>
+
+</body>
+</html>
