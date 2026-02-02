@@ -1,72 +1,18 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
 <title>MTProto Proxy</title>
 
 <!-- Google Font -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<!-- <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"> -->
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
-
-<style>
-  body {
-    background-color: #000;
-    background-image: url("./assets/images/bg.jpg");
-    background-size: cover;
-    background-position: top center;
-    color: #eaeaea;
-    padding: 30px;
-  }
-
-  .container {
-    max-width: 720px;
-    margin: auto;
-  }
-
-
-  .buttons {
-    margin-top: 12px;
-    text-align: center;
-  }
-
-  button {
-    background: #00000050;
-    border: none;
-    padding: 8px 14px;
-    cursor: pointer;
-    font-family: "Vazirmatn", sans-serif;
-    color: #eaeaea;
-    font-weight: 400;
-    margin: 0 6px;
-  }
-
-  button:hover {
-    background: #00cc7a;
-  }
-
-  .box {
-    background: #00000050;
-    border: 3px solid #00ff9c;
-    padding: 14px;
-    font-family: 'JetBrains Mono', monospace;
-    height: 400px;
-
-    white-space: pre;
-    overflow-y: auto;
-    overflow-x: auto;
-
-    font-size: 14px;
-  }
-  .text{
-    text-align: center;
-    direction: rtl;
-    font-family: "Vazirmatn", sans-serif;
-    font-weight: 300;
-    font-size: 12px;
-  }
-</style>
+<link href="./assets/css/main.css" rel="stylesheet"/>
+<script src="./assets/js/main.js"></script>
+<script src="./assets/js/clipboard.min.js"></script>
 </head>
 <body>
 
@@ -76,56 +22,37 @@
   </div>
 
   <div class="buttons">
-    <button onclick="copyText()">📋 کپی</button>
+    <!-- <button onclick="copyText()">📋 کپی</button> -->
+    <!-- <button class="buttons" data-clipboard-text="aaa" >📋 کپی</button> -->
+    <button class="buttons" data-clipboard-action="copy" data-clipboard-target="#proxyBox" >📋 کپی</button>
     <button onclick="loadProxies()">🔄 رندوم جدید</button>
   </div>
 </div>
 <br>
-<br>
-<br>
-<br>
-<hr>
-<p class="text">ساخته شده با ❤️ توسط Renger08</p>
+<!-- <hr> -->
+<div class="text">
+  <p >ساخته شده با ❤️ توسط Renger08</p>
+</div>
+<!-- <hr> -->
 
 <script>
-const URL = 'https://raw.githubusercontent.com/SoliSpirit/mtproto/master/all_proxies.txt';
-const COUNT = 20;
+  // var proxies = document.getElementById("proxyBox").textContent;
 
-function shuffle(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-}
+  var clipboard = new ClipboardJS('.buttons');
 
-function loadProxies() {
-  fetch(URL + '?t=' + Date.now())
-    .then(r => r.text())
-    .then(text => {
-      const list = text
-        .split('\n')
-        .map(l => l.trim())
-        .filter(Boolean);
+  clipboard.on('success', function (e) {
+    console.info('Action:', e.action);
+    console.info('Text:', e.text);
+    console.info('Trigger:', e.trigger);
 
-      shuffle(list);
+    e.clearSelection();
+  });
 
-      document.getElementById('proxyBox').textContent =
-        list.slice(0, COUNT).join('\n');
-    })
-    .catch(() => {
-      document.getElementById('proxyBox').textContent =
-        'خطا در دریافت داده';
-    });
-}
+  clipboard.on('error', function (e) {
+    console.error('Action:', e.action);
+    console.error('Trigger:', e.trigger);
+  });
 
-function copyText() {
-  navigator.clipboard.writeText(
-    document.getElementById('proxyBox').textContent
-  );
-}
-
-loadProxies();
 </script>
-
 </body>
 </html>
