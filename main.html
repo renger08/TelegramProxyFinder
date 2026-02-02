@@ -10,8 +10,170 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"> -->
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet"/>
-<link href="./assets/css/main.css" rel="stylesheet"/>
-<script src="./assets/js/main.js"/>
+
+<style>
+  body {
+    /* min-height: 100vh; */
+    background-color: #000;
+    /*background-image: url("../images/bg.jpg");*/
+    background-size: cover;
+    background-position: top center;
+    color: #eaeaea;
+    padding: 30px;
+    /* display: flex;
+    flex-direction: column; */
+}
+
+.container {
+    max-width: 720px;
+    margin: auto;
+}
+
+
+.buttons {
+    margin-top: 12px;
+    text-align: center;
+}
+
+button {
+    background: #00000050;
+    border: none;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-family: "Vazirmatn", sans-serif;
+    /* font-family: 'Consolas'; */
+    color: #eaeaea;
+    font-weight: 400;
+    margin: 0 6px;
+}
+
+button:hover {
+    background: #00cc7a;
+}
+
+.box {
+    background: #00000050;
+    border: 3px solid #00ff9c;
+    padding: 14px;
+    /* font-family: 'JetBrains Mono', monospace; */
+    font-family: monospace;
+    font-size: 14px;
+    height: 400px;
+    white-space: pre;
+    overflow-y: auto;
+    overflow-x: auto;
+
+    font-size: 14px;
+}
+.text{
+    text-align: center;
+    direction: rtl;
+    font-family: "Vazirmatn", sans-serif;
+    font-weight: 300;
+    font-size: 12px;
+    padding-top: 50px;
+}
+@media (max-width: 600px) {
+    body {
+        padding: 14px;
+        margin-top: 10%;
+    }
+
+    .box {
+        /* height: 310px; */
+        height: 30%;
+        font-size: 13px;
+    }
+
+    button {
+        padding: 12px 20px;
+        font-size: 14px;
+        margin-top: 10%;
+    }
+    .text{
+        text-align: center;
+        font-size: 11px;
+        /* padding-top: 30%; */
+        /* position: absolute;
+        bottom: 0px; */
+    }
+}
+</style>
+<script>
+  const URL = 'https://raw.githubusercontent.com/SoliSpirit/mtproto/master/all_proxies.txt';
+const COUNT = 20;
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+function loadProxies() {
+  fetch(URL + '?t=' + Date.now())
+    .then(r => r.text())
+    .then(text => {
+      const list = text
+        .split('\n')
+        .map(l => l.trim())
+        .filter(Boolean);
+
+      shuffle(list);
+
+      document.getElementById('proxyBox').textContent =
+        list.slice(0, COUNT).join('\n');
+    })
+    .catch(() => {
+      document.getElementById('proxyBox').textContent =
+        'خطا در دریافت داده';
+    });
+}
+
+loadProxies();
+
+// function copyText() {
+//   const text = document.getElementById('proxyBox').textContent;
+
+//   if (navigator.clipboard && window.isSecureContext) {
+//     navigator.clipboard.writeText(text)
+//       .then(() => showToast('کپی شد ✅'))
+//       .catch(() => fallbackCopy(text));
+//   } else {
+//     fallbackCopy(text);
+//   }
+// }
+
+// function copyText() {
+//   navigator.clipboard.writeText(
+//     document.getElementById('proxyBox').textContent
+//   );
+// }
+
+// function fallbackCopy(text) {
+//   const textarea = document.createElement('textarea');
+//   textarea.value = text;
+//   textarea.style.position = 'fixed';
+//   textarea.style.opacity = '0';
+//   document.body.appendChild(textarea);
+//   textarea.focus();
+//   textarea.select();
+
+//   try {
+//     document.execCommand('copy');
+//     showToast('کپی شد ✅');
+//   } catch {
+//     showToast('کپی ناموفق ❌');
+//   }
+
+//   document.body.removeChild(textarea);
+// }
+
+// function showToast(msg) {
+//   alert(msg); // اگر خواستی بعداً toast واقعی می‌سازیم
+// }
+
+</script>
 <script src="https://raw.githubusercontent.com/zenorocha/clipboard.js/refs/heads/master/dist/clipboard.min.js"></script>
 <script src="https://raw.githubusercontent.com/zenorocha/clipboard.js/refs/heads/master/dist/clipboard.js"></script>
 
